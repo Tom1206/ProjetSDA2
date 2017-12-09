@@ -2,13 +2,13 @@ CC= gcc
 CFLAGS= -W -Wall
 LDFLAGS=
 INCLUDES= -I "./include"
-EXEC= bin/main
+EXEC= bin/image
 SRC= $(wildcard src/*.c)
 OBJ= $(patsubst src/%.c,obj/%.o,$(SRC))
 
 all: $(EXEC)
 
-bin/main: obj/main.o
+bin/image: obj/image.o
 	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
 
 obj/%.o: src/%.c
