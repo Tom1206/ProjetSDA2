@@ -1,7 +1,7 @@
 /**
 * @file image.c
 * @brief Contient toutes les fonctions nécessaire aux traitement des fichiers images
-* @author Thomas Millot, Wael Hammed
+* @author Thomas Millot, Wael Hamed
 * @version 1.0
 * @date 15/12/2017
 */
