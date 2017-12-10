@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "image.h": "c",
-        "liste.h": "c"
+        "liste.h": "c",
+        "prog_test.h": "c"
     }
 }

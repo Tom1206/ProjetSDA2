@@ -32,6 +32,8 @@ void tests_liste_pixel(){
 
     liste->tail->pixel->B = 4; //vérification que head == tail
     printf("head->pixel->B = %d\n", liste->head->pixel->B);
+    printf("head->element_suivant == NULL -> %d\n", liste->head->element_suivant == NULL);
+    printf("head->representant == NULL -> %d\n", liste->head->representant == NULL);
 }
 
 int main(int argc, char ** argv){

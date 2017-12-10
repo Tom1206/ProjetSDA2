@@ -204,7 +204,6 @@ void Write(Image * image, char * nomImagePPM) {
 
 }
 
-
 int main(int argc, char const *argv[]) {
 
     (void)argc;
