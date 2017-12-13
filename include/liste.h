@@ -12,20 +12,26 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "image.h" //juste pour récupérer la struct Pixel
-//TODO (peut-être) : séparer le code de la struct dans un fichier .h à part
+#include "image.h"
+
 
 //@brief Représente un des éléments de la liste chainée
 typedef struct element_liste {
+
     Pixel *pixel;
     struct element_liste *element_suivant;
     struct element_liste *representant;
+
 } Element_liste;
+
 
 //@brief Représente la liste chainée de pixels
 typedef struct liste_pixels {
+
     struct element_liste *head;
     struct element_liste *tail;
+    int taille;
+
 } Liste_pixels;
 
 

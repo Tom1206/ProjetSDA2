@@ -18,6 +18,7 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
+#include <time.h>
 
 
 /**
@@ -33,13 +34,14 @@ typedef struct pixel {
 * @brief Contient un tableau de pixels et la taille de l'image
 */
 typedef struct image {
-    Pixel ** tableauPixels;
+    Pixel *** tableauPixels;
     int largeur, hauteur;
 } Image;
 
 
 Image * Read(char * nomImagePBM);
 void Write(Image * image, char * nomImagePPM);
+void couleurAleatoire(Pixel * P);
 void Generate(int n, int m, char * nomImagePBM);
 void supprimerImage(Image * image);
 

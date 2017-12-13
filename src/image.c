@@ -89,9 +89,9 @@ Image * Read(char * nomImagePBM) {
         position++;
 
         // On peut maintenant allouer la mémoire nécessaire dans le tableau de pixels
-        image -> tableauPixels = malloc(image -> largeur * sizeof(Pixel));
+        image -> tableauPixels = malloc(image -> largeur * sizeof(Pixel **));
         for (int i = 0; i < image -> largeur; i++) {
-            image -> tableauPixels[i] = malloc(image -> hauteur * sizeof(Pixel));
+            image -> tableauPixels[i] = malloc(image -> hauteur * sizeof(Pixel *));
         }
 
         // On remplit ensuite les pixels du tableau
@@ -113,18 +113,20 @@ Image * Read(char * nomImagePBM) {
                 position++;
             }
 
+            image -> tableauPixels[l][h] = malloc(sizeof(Pixel));
+
             // Cas pixel noir
             if (contenuFichierImage[position] == '1') {
-                image -> tableauPixels[l][h].R = 0;
-                image -> tableauPixels[l][h].G = 0;
-                image -> tableauPixels[l][h].B = 0;
+                image -> tableauPixels[l][h] -> R = 0;
+                image -> tableauPixels[l][h] -> G = 0;
+                image -> tableauPixels[l][h] -> B = 0;
             }
 
             // Cas pixel blanc
             if (contenuFichierImage[position] == '0') {
-                image -> tableauPixels[l][h].R = 255;
-                image -> tableauPixels[l][h].G = 255;
-                image -> tableauPixels[l][h].B = 255;
+                image -> tableauPixels[l][h] -> R = 255;
+                image -> tableauPixels[l][h] -> G = 255;
+                image -> tableauPixels[l][h] -> B = 255;
             }
 
             position++;
@@ -182,7 +184,7 @@ void Write(Image * image, char * nomImagePPM) {
 
             // On formate les 3 couleurs du pixel
             char pixelAEcrire[15];
-            sprintf(pixelAEcrire, "%d %d %d ", image -> tableauPixels[j][i].R, image -> tableauPixels[j][i].G, image -> tableauPixels[j][i].B);
+            sprintf(pixelAEcrire, "%d %d %d ", image -> tableauPixels[j][i] -> R, image -> tableauPixels[j][i] -> G, image -> tableauPixels[j][i] -> B);
 
             // Et on l'écrit à la suite du fichier
             int k = 0;
@@ -211,11 +213,29 @@ void Write(Image * image, char * nomImagePPM) {
 
 
 void Generate(int n, int m, char * nomImagePBM) {
-    (void)n; (void)m; (void)nomImagePBM;
+
 
 
 }
 
+
+
+void couleurAleatoire(Pixel * P) {
+
+
+    // On alloue une valeur aléatoire à chaque composante couleur
+    P->R = rand()%255;
+    P->G = rand()%255;
+    P->B = rand()%255;
+
+    // Si la couleur crée est noire ou blanche, on recommence
+    while ((P->R == 0 && P->G == 0 && P->B == 0) || (P->R == 255 && P->G == 255 && P->B == 255)) {
+        P->R = rand()%255;
+        P->G = rand()%255;
+        P->B = rand()%255;
+    }
+
+}
 
 
 void supprimerImage(Image * image) {
