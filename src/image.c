@@ -211,7 +211,7 @@ void Write(Image * image, char * nomImagePPM) {
 
 
 void Generate(int n, int m, char * nomImagePBM) {
-
+    (void)n; (void)m; (void)nomImagePBM;
 
 
 }
