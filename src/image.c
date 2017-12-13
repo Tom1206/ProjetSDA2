@@ -98,7 +98,9 @@ Image * Read(char * nomImagePBM) {
 
         int l = 0, h = 0;
 
-        while (position < (int)strlen(contenuFichierImage)) {
+        int taille = (int)strlen(contenuFichierImage);
+
+        while (position < taille) {
 
 
             if (l == image -> largeur) {
@@ -155,7 +157,8 @@ void Write(Image * image, char * nomImagePPM) {
     // On alloue la place nécessaire au contenu du fichier :
     // la taille de l'introduction
     // + 4 caractères par couleur (3 digits + espace), 3 couleurs par pixel
-    char * contenuImage = malloc((strlen(intro) + (image -> largeur * image -> hauteur) * 3 * 4) * sizeof(char));
+    // + un peu plus d'espace au cas où
+    char * contenuImage = malloc((strlen(intro) + (image -> largeur * image -> hauteur) * 3 * 4 * 2) * sizeof(char));
 
     // On écrit l'intro
     for (int i = 0; i < (int)strlen(intro); i++) {
