@@ -39,5 +39,9 @@ typedef struct image {
 
 
 Image * Read(char * nomImagePBM);
+void Write(Image * image, char * nomImagePPM);
+void Generate(int n, int m, char * nomImagePBM);
+void supprimerImage(Image * image);
+
 
 #endif // IMAGE_H

@@ -100,6 +100,7 @@ Image * Read(char * nomImagePBM) {
 
         while (position < (int)strlen(contenuFichierImage)) {
 
+
             if (l == image -> largeur) {
                 l = 0;
                 h++;
@@ -199,17 +200,29 @@ void Write(Image * image, char * nomImagePPM) {
     if (fputs(contenuImage, fichier) == EOF) {
         exit(EXIT_FAILURE);
     }
-    
+
     fclose(fichier);
 
 }
 
-int main(int argc, char const *argv[]) {
 
-    (void)argc;
-    Image *I = Read((char *)argv[1]);
 
-    Write(I, "test.ppm");
+void Generate(int n, int m, char * nomImagePBM) {
 
-    return 0;
+
+
+}
+
+
+
+void supprimerImage(Image * image) {
+
+    for (int i = 0; i < image -> largeur; i++) {
+        free(image -> tableauPixels[i]);
+    }
+
+    free(image -> tableauPixels);
+
+    free(image);
+
 }

@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "image.c"
+#include "image.h"
+#include "liste.h"
 
 #endif // PROG_TEST_H
