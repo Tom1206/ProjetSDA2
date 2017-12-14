@@ -11,22 +11,22 @@
 
 //@brief Créer un nouvel ensemble S ne contenant que l'élément p
 //(p est le représentant de S)
-Liste_pixels * MakeSet(Element_liste * e) {
+Liste * MakeSet(Liste * e) {
 
-    Liste_pixels * res = malloc(sizeof(Liste_pixels));
+    Representant * r = malloc(sizeof(Representant));
 
-    res -> head = e;
-    res -> head -> representant = e;
-    res -> tail = res -> head;
-    res -> taille = 1;
+    e -> representant = r;
+    r -> head = e;
+    r -> tail = e;
+    r -> taille = 1;
 
-    return res;
+    return e;
 
 }
 
 //@brief Retourne un pointeur vers le représentant de l'ensemble contenant
 //l'élément e
-Element_liste * FindSet(Element_liste * e) {
+Representant * FindSet(Liste * e) {
 
     return e -> representant;
 
@@ -35,58 +35,62 @@ Element_liste * FindSet(Element_liste * e) {
 //@brief créer un nouvel ensemble S qui contient les éléments des ensembles A et B
 //puis supprime les ensembles A et B
 //@pre Les ens. A et B doivent être disjoints
-Liste_pixels * Union(Liste_pixels * A, Liste_pixels * B) {
+void Union(Liste * A, Liste * B) {
 
-    // Si A plus grand, on met B à la suite de A
-    if (A -> taille > B -> taille) {
+    if (FindSet(A) -> head != FindSet(B) -> head) {
+        // Si A plus grand, on met B à la suite de A
+        if (FindSet(A) -> taille > FindSet(B) -> taille) {
 
-        Element_liste * courant = B -> head;
+            FindSet(A) -> tail -> element_suivant = FindSet(B) -> head;
+            FindSet(A) -> tail = FindSet(B) -> tail;
+            FindSet(A) -> taille += FindSet(B) -> taille;
 
-        do {
+            Liste * courant = FindSet(B) -> head;
 
-            courant -> representant = A -> head;
+            while (courant != NULL) {
 
-            courant -> pixel = FindSet(courant) -> pixel;
+                courant -> representant = FindSet(A);
 
-            A -> tail = courant;
-            A -> taille ++;
+                courant = courant -> element_suivant;
 
-            courant = courant -> element_suivant;
+            }
+
+            FindSet(B) -> head = FindSet(A) -> head;
+            FindSet(B) -> tail = FindSet(A) -> tail;
+            FindSet(B) -> taille = FindSet(A) -> taille;
+
+
+        // Sinon on met A à la suite de B
+        } else {
+
+            FindSet(B) -> tail -> element_suivant = FindSet(A) -> head;
+            FindSet(B) -> tail = FindSet(A) -> tail;
+            FindSet(B) -> taille += FindSet(A) -> taille;
+
+            Liste * courant = FindSet(A) -> head;
+
+            while (courant != NULL) {
+
+                courant -> representant = FindSet(B);
+
+                courant = courant -> element_suivant;
+
+            }
+
+            FindSet(A) -> head = FindSet(B) -> head;
+            FindSet(A) -> tail = FindSet(B) -> tail;
+            FindSet(A) -> taille = FindSet(B) -> taille;
 
         }
-        while (courant != NULL);
-
-        return A;
-
-    // Sinon on met A à la suite de B
-    } else {
-
-        Element_liste * courant = A -> head;
-
-        do {
-
-            courant -> representant = B -> head;
-
-            courant -> pixel = FindSet(courant) -> pixel;
-
-            B -> tail = courant;
-            B -> taille ++;
-
-            courant = courant -> element_suivant;
-
-        }
-        while (courant != NULL);
-
-        return B;
 
     }
 
 }
 
 
-Element_liste * nouvelElement (Pixel * P) {
+Liste * nouvelElement (Pixel * P) {
 
-    Element_liste * e = malloc(sizeof(Element_liste));
+    Liste * e = malloc(sizeof(Liste));
 
     e -> representant = NULL;
     e -> element_suivant = NULL;
@@ -104,16 +108,16 @@ void coloriage(Image * I) {
     // initialisation de rand
     srand(time(NULL));
 
-    Liste_pixels *** LL = malloc(I -> largeur * sizeof(Liste_pixels**));
+    Liste *** LL = malloc(I -> largeur * sizeof(Liste**));
     for (int i = 0; i < I -> largeur; i++) {
-        LL[i] = malloc(I -> hauteur * sizeof(Liste_pixels*));
+        LL[i] = malloc(I -> hauteur * sizeof(Liste*));
     }
 
     // On crée un tableau de listes, une liste par pixel blanc
     for (int i = 0; i < I -> hauteur; i++) {
         for (int j = 0; j < I -> largeur; j++) {
 
-            LL[j][i] = malloc(sizeof(Liste_pixels));
+            LL[j][i] = malloc(sizeof(Liste));
 
             if (I -> tableauPixels[j][i] -> R == 0 || I -> tableauPixels[j][i] -> G == 0 || I -> tableauPixels[j][i] -> B == 0) {
 
@@ -142,11 +146,8 @@ void coloriage(Image * I) {
 
                     if (LL[j][i - 1] != NULL) {
 
-                        if (LL[j][i] != LL[j][i - 1]) {
+                        Union(LL[j][i], LL[j][i - 1]);
 
-                            LL[j][i] = LL[j][i - 1] = Union(LL[j][i], LL[j][i - 1]);
-
-                        }
                     }
                 }
             }
@@ -158,11 +159,8 @@ void coloriage(Image * I) {
 
                     if (LL[j - 1][i] != NULL) {
 
-                        if (LL[j][i] != LL[j - 1][i]) {
+                        Union(LL[j][i], LL[j - 1][i]);
 
-                            LL[j][i] = LL[j - 1][i] = Union(LL[j][i], LL[j - 1][i]);
-
-                        }
                     }
                 }
             }
@@ -174,11 +172,8 @@ void coloriage(Image * I) {
 
                     if (LL[j + 1][i] != NULL) {
 
-                        if (LL[j][i] != LL[j + 1][i]) {
+                        Union(LL[j][i], LL[j + 1][i]);
 
-                            LL[j][i] = LL[j + 1][i] = Union(LL[j][i], LL[j + 1][i]);
-
-                        }
                     }
                 }
             }
@@ -191,11 +186,8 @@ void coloriage(Image * I) {
 
                     if (LL[j][i + 1] != NULL) {
 
-                        if (LL[j][i] != LL[j][i + 1]) {
+                        Union(LL[j][i], LL[j][i + 1]);
 
-                            LL[j][i] = LL[j][i + 1] = Union(LL[j][i], LL[j][i + 1]);
-
-                        }
                     }
                 }
             }
@@ -209,7 +201,7 @@ void coloriage(Image * I) {
     for (int i = 0; i < I -> hauteur; i++) {
         for (int j = 0; j < I -> largeur; j++) {
             if (LL[j][i] != NULL) {
-                I -> tableauPixels[j][i] = LL[j][i] -> head -> pixel;
+                I -> tableauPixels[j][i] = FindSet(LL[j][i]) -> head -> pixel;
             }
         }
     }

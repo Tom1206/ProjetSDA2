@@ -26,34 +26,154 @@ Noeud* FindSet(Noeud *e){
     return res;
 }
 
-//@brief Créer un nouvel arbre S contenant à la fois les 
+//@brief Créer un nouvel arbre S contenant à la fois les
 //élém. de l'arbre A (contenant x) et les éléments de l'arbre B (contenant y)
-Noeud* Union(Noeud *x, Noeud *y){
+void Union(Noeud *x, Noeud *y){
     Noeud *A = FindSet(x);
     Noeud *B = FindSet(y);
     //le rang de l'ensemble S sera le rang de la racine du long arbre +1
     int rang = A->rang >= B->rang ? A->rang : B->rang;
     rang++;
     A->rang = rang;
-    //on relie la racine de l'arbre B à celle de l'arbre A 
+    //on relie la racine de l'arbre B à celle de l'arbre A
     //(racine de B devient un fils de la racine de A)
     B->pere = A;
 
-    return A;
 }
 
 //@brief Créer un nouveau Noeud (racine d'un nouvel arbre) depuis un Pixel
 Noeud* nouvelElement (Pixel * P) {
+
     Noeud *e = malloc(sizeof(Noeud));
+
     e -> pere = e;
     e -> rang = 0;
+
     couleurAleatoire(P);
     e -> pixel = P;
+
     return e;
 }
 
+void coloriage(Image * I) {
+
+    // initialisation de rand
+    srand(time(NULL));
+
+    Noeud *** NN = malloc(I -> largeur * sizeof(Noeud**));
+    for (int i = 0; i < I -> largeur; i++) {
+        NN[i] = malloc(I -> hauteur * sizeof(Noeud*));
+    }
+
+    // On crée un tableau de listes, une liste par pixel blanc
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+
+            NN[j][i] = malloc(sizeof(Noeud));
+
+            if (I -> tableauPixels[j][i] -> R == 0 || I -> tableauPixels[j][i] -> G == 0 || I -> tableauPixels[j][i] -> B == 0) {
+
+                // Cela signifiera la position d'un pixel noir
+                NN[j][i] = NULL;
+
+            } else {
+
+                // On crée une nouvelle liste par pixel, avec une couleur aléatoire à chaque fois
+                // La couleur est modififiée directment dans la structure image
+                NN[j][i] = MakeSet(nouvelElement(I -> tableauPixels[j][i]));
+
+            }
+
+        }
+    }
+
+    // On parcours ce tableau de listes
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+
+            //traitement pixel supérieur
+            if (NN[j][i] != NULL) {
+
+                if (i > 0) {
+
+                    if (NN[j][i - 1] != NULL) {
+
+                        Union(NN[j][i], NN[j][i - 1]);
+
+                    }
+                }
+            }
+
+            //traitement pixel de gauche
+            if (NN[j][i] != NULL) {
+
+                if (j > 0) {
+
+                    if (NN[j - 1][i] != NULL) {
+
+                        Union(NN[j][i], NN[j - 1][i]);
+
+                    }
+                }
+            }
+
+            //traitement pixel de droite
+            if (NN[j][i] != NULL) {
+
+                if (j < I -> largeur - 1) {
+
+                    if (NN[j + 1][i] != NULL) {
+
+                        Union(NN[j][i], NN[j + 1][i]);
+
+                    }
+                }
+            }
+
+
+            //traitement pixel inférieur
+            if (NN[j][i] != NULL) {
+
+                if (i < I -> hauteur - 1) {
+
+                    if (NN[j][i + 1] != NULL) {
+
+                        Union(NN[j][i], NN[j][i + 1]);
+                    }
+                }
+            }
+
+
+        }
+    }
+
+
+    // Un boucle supplémentaire permet de corriger certains problèmes de couleurs
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+            if (NN[j][i] != NULL) {
+                I -> tableauPixels[j][i] = FindSet(NN[j][i]) -> pixel;
+            }
+        }
+    }
+}
+
+
 int main(int argc, char** argv){
-    (void)argc; (void)argv;
-    printf("Hello arbre.c\n");
-    return 1;
+
+    (void)argc;
+    printf("Prog_test\n");
+
+    printf("Lecture du fichier .pbm\n");
+    Image *I = Read((char *)argv[1]);
+
+    coloriage(I);
+
+    printf("Écriture du fichier .ppm\n");
+    Write(I, "test.ppm");
+
+    printf("Supression de la structure image\n");
+    supprimerImage(I);
+
+    return 0;
 }

@@ -16,23 +16,23 @@
 
 
 //@brief Représente un des éléments de la liste chainée
-typedef struct element_liste {
+typedef struct liste {
 
     Pixel *pixel;
-    struct element_liste *element_suivant;
-    struct element_liste *representant;
+    struct liste *element_suivant;
+    struct representant *representant;
 
-} Element_liste;
+} Liste;
 
 
 //@brief Représente la liste chainée de pixels
-typedef struct liste_pixels {
+typedef struct representant {
 
-    struct element_liste *head;
-    struct element_liste *tail;
+    struct liste *head;
+    struct liste *tail;
     int taille;
 
-} Liste_pixels;
+} Representant;
 
 
 #endif // LISTE_H

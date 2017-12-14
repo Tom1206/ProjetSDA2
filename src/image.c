@@ -236,15 +236,15 @@ void Generate(int n, int m, char * nomImagePBM) {
     int compteur = strlen(intro);
 
     int compteurPixels = 0;
-    (void)compteurPixels;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
 
-            // Tous les 70 pixels écrits, retour à la ligne
-            if (compteur == 70) {
+            // Tous les 35 pixels écrits, retour à la ligne
+            if (compteurPixels == 35) {
                 contenuImage[compteur] = '\n';
                 compteur++;
+                compteurPixels = 0;
             }
 
             // On met le pixel à 1 ou 0
@@ -258,6 +258,8 @@ void Generate(int n, int m, char * nomImagePBM) {
                 compteur++;
                 k++;
             }
+
+            compteurPixels ++;
 
         }
     }
