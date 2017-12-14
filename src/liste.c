@@ -229,7 +229,10 @@ void coloriage(Image * I) {
 
 int main(int argc, char const *argv[]) {
 
-    (void)argc;
+    if (argc != 2) {
+        return 1;
+    }
+
     printf("Coloriage par liste\n");
 
     printf("Lecture du fichier .pbm\n");

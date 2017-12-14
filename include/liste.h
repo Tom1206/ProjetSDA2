@@ -1,7 +1,7 @@
 /**
 * @file liste.h
 * @brief Header for liste.c
-* @author Thomas Millot, Wael Hammed
+* @author Thomas Millot, Wael Hamed
 * @version 1.0
 * @date 15/12/2017
 */

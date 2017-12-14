@@ -151,6 +151,7 @@ void coloriage(Image * I) {
                     if (NN[j][i + 1] != NULL) {
 
                         Union(NN[j][i], NN[j][i + 1]);
+
                     }
                 }
             }
@@ -189,7 +190,10 @@ void coloriage(Image * I) {
 
 int main(int argc, char const *argv[]) {
 
-    (void)argc;
+    if (argc != 2) {
+        return 1;
+    }
+    
     printf("Coloriage par arbre\n");
 
     printf("Lecture du fichier .pbm\n");
