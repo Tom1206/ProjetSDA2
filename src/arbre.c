@@ -41,11 +41,6 @@ Noeud* Union(Noeud *x, Noeud *y){
 
     return A;
 }
-typedef struct noeud {
-    Pixel *pixel;
-    struct noeud *pere;
-    int rang;
-} Noeud;
 
 //@brief Créer un nouveau Noeud (racine d'un nouvel arbre) depuis un Pixel
 Noeud* nouvelElement (Pixel * P) {
