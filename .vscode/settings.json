@@ -2,6 +2,7 @@
     "files.associations": {
         "image.h": "c",
         "liste.h": "c",
-        "prog_test.h": "c"
+        "prog_test.h": "c",
+        "arbre.h": "c"
     }
 }

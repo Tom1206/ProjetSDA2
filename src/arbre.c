@@ -41,6 +41,21 @@ Noeud* Union(Noeud *x, Noeud *y){
 
     return A;
 }
+typedef struct noeud {
+    Pixel *pixel;
+    struct noeud *pere;
+    int rang;
+} Noeud;
+
+//@brief Créer un nouveau Noeud (racine d'un nouvel arbre) depuis un Pixel
+Noeud* nouvelElement (Pixel * P) {
+    Noeud *e = malloc(sizeof(Noeud));
+    e -> pere = e;
+    e -> rang = 0;
+    couleurAleatoire(P);
+    e -> pixel = P;
+    return e;
+}
 
 int main(int argc, char** argv){
     (void)argc; (void)argv;
