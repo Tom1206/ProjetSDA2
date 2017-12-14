@@ -5,6 +5,5 @@
 #include <stdlib.h>
 
 #include "image.h"
-#include "liste.h"
 
 #endif // PROG_TEST_H

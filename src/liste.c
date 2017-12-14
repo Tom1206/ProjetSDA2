@@ -45,10 +45,8 @@ Liste_pixels * Union(Liste_pixels * A, Liste_pixels * B) {
         do {
 
             courant -> representant = A -> head;
-            courant -> pixel -> R = FindSet(courant) -> pixel -> R;
-            courant -> pixel -> G = FindSet(courant) -> pixel -> G;
-            courant -> pixel -> B = FindSet(courant) -> pixel -> B;
 
+            courant -> pixel = FindSet(courant) -> pixel;
 
             A -> tail = courant;
             A -> taille ++;
@@ -69,9 +67,7 @@ Liste_pixels * Union(Liste_pixels * A, Liste_pixels * B) {
 
             courant -> representant = B -> head;
 
-            courant -> pixel -> R = FindSet(courant) -> pixel -> R;
-            courant -> pixel -> G = FindSet(courant) -> pixel -> G;
-            courant -> pixel -> B = FindSet(courant) -> pixel -> B;
+            courant -> pixel = FindSet(courant) -> pixel;
 
             B -> tail = courant;
             B -> taille ++;
@@ -205,6 +201,16 @@ void coloriage(Image * I) {
             }
 
 
+        }
+    }
+
+
+    // Un boucle supplémentaire permet de corriger certains problèmes de couleurs
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+            if (LL[j][i] != NULL) {
+                I -> tableauPixels[j][i] = LL[j][i] -> head -> pixel;
+            }
         }
     }
 }

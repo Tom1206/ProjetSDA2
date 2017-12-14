@@ -215,6 +215,61 @@ void Write(Image * image, char * nomImagePPM) {
 void Generate(int n, int m, char * nomImagePBM) {
 
 
+    // initialisation de rand
+    srand(time(NULL));
+
+    // On crée l'introduction du fichier PBM
+    char intro[50];
+    sprintf(intro, "P1\n%d %d\n", n, m);
+
+    // On alloue la place nécessaire au contenu du fichier :
+    // la taille de l'introduction
+    // + 2 caractères par pixel (0 ou 1 + espace)
+    // + un peu plus d'espace au cas où
+    char * contenuImage = malloc((strlen(intro) + (n * m) * 3) * sizeof(char));
+
+    // On écrit l'intro
+    for (int i = 0; i < (int)strlen(intro); i++) {
+        contenuImage[i] = intro[i];
+    }
+
+    int compteur = strlen(intro);
+
+    int compteurPixels = 0;
+
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+
+            // Tous les 70 pixels écrits, retour à la ligne
+            if (compteur == 70) {
+                contenuImage[compteur] = '\n';
+                compteur++;
+            }
+
+            // On met le pixel à 1 ou 0
+            char pixelAEcrire[5];
+            sprintf(pixelAEcrire, "%d ", rand()%2);
+
+            // Et on l'écrit à la suite du contenu du fichier
+            int k = 0;
+            while (pixelAEcrire[k] != '\0') {
+                contenuImage[compteur] = pixelAEcrire[k];
+                compteur++;
+                k++;
+            }
+
+        }
+    }
+
+    // Finalement on écrit tout ça dans le fichier
+    FILE *fichier = fopen(nomImagePBM, "w");
+
+    if (fputs(contenuImage, fichier) == EOF) {
+        exit(EXIT_FAILURE);
+    }
+
+    fclose(fichier);
+
 
 }
 
