@@ -2,17 +2,17 @@ CC= gcc
 CFLAGS= -W -Wall -g
 LDFLAGS=
 INCLUDES= -I "./include"
-EXEC= bin/prog_test bin/arbre
+EXEC= bin/liste
 SRC= $(wildcard src/*.c)
 OBJ= $(patsubst src/%.c,obj/%.o,$(SRC))
 
 all: $(EXEC)
 
-bin/prog_test: obj/prog_test.o obj/image.o obj/liste.o
+bin/liste: obj/image.o obj/liste.o
 	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
 
-bin/arbre: obj/arbre.o obj/image.o obj/liste.o
-	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
+#bin/arbre: obj/arbre.o obj/image.o
+#	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
 
 obj/%.o: src/%.c
 	$(CC) $(INCLUDES) -o $@ -c $< $(CFLAGS)
