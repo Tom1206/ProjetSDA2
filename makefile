@@ -14,8 +14,8 @@ bin/liste: obj/image.o obj/liste.o
 bin/prog_test: obj/image.o obj/prog_test.o
 	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
 
-#bin/arbre: obj/arbre.o obj/image.o
-#	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
+bin/arbre: obj/arbre.o obj/image.o
+	$(CC) $(INCLUDES) -o $@ $^ $(LDFLAGS)
 
 obj/%.o: src/%.c
 	$(CC) $(INCLUDES) -o $@ -c $< $(CFLAGS)

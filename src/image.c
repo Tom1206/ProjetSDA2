@@ -236,6 +236,7 @@ void Generate(int n, int m, char * nomImagePBM) {
     int compteur = strlen(intro);
 
     int compteurPixels = 0;
+    (void)compteurPixels;
 
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
