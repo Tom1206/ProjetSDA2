@@ -26,7 +26,9 @@
 * @brief Contient les trois couleurs composants un pixel
 */
 typedef struct pixel {
+
     int R, G, B;
+
 } Pixel;
 
 /**
@@ -34,8 +36,10 @@ typedef struct pixel {
 * @brief Contient un tableau de pixels et la taille de l'image
 */
 typedef struct image {
+
     Pixel *** tableauPixels;
     int largeur, hauteur;
+
 } Image;
 
 

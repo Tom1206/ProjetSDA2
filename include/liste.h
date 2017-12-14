@@ -9,8 +9,6 @@
 #ifndef LISTE_H
 #define LISTE_H
 
-#include <stdio.h>
-#include <stdlib.h>
 
 #include "image.h"
 
@@ -33,6 +31,13 @@ typedef struct representant {
     int taille;
 
 } Representant;
+
+
+Liste * MakeSet(Liste * e);
+Representant * FindSet(Liste * e);
+void Union(Liste * A, Liste * B);
+Liste * nouvelElement (Pixel * P);
+void coloriage(Image * I);
 
 
 #endif // LISTE_H

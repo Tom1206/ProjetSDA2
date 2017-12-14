@@ -208,6 +208,8 @@ void Write(Image * image, char * nomImagePPM) {
 
     fclose(fichier);
 
+    free(contenuImage);
+
 }
 
 
@@ -273,13 +275,14 @@ void Generate(int n, int m, char * nomImagePBM) {
 
     fclose(fichier);
 
+    free(contenuImage);
+
 
 }
 
 
 
 void couleurAleatoire(Pixel * P) {
-
 
     // On alloue une valeur aléatoire à chaque composante couleur
     P->R = rand()%255;

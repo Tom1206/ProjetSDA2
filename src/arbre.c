@@ -11,37 +11,48 @@
 //@brief Créer un nouvel ensemble S ne contenant que l'élément p
 //(p est le représentant de S)
 Noeud* MakeSet(Noeud *e){
+
     e->rang = 0;
     e->pere = e;
+
     return e;
+
 }
 
 //@brief Retourne un poiteur vers le représentant de l'ensemble contenant l'élément e
-Noeud* FindSet(Noeud *e){
+Noeud* FindSet(Noeud *e) {
+
     Noeud *res = e;
-    //tant qu'on est pas sur la racine
+
+    // Tant qu'on est pas sur la racine
     while(res->pere != res){
         res = res->pere;
     }
+
     return res;
+
 }
 
 //@brief Créer un nouvel arbre S contenant à la fois les
 //élém. de l'arbre A (contenant x) et les éléments de l'arbre B (contenant y)
 void Union(Noeud *x, Noeud *y){
+
     Noeud *A = FindSet(x);
     Noeud *B = FindSet(y);
+
     //le rang de l'ensemble S sera le rang de la racine du long arbre +1
     int rang = A->rang >= B->rang ? A->rang : B->rang;
     rang++;
+
     A->rang = rang;
+
     //on relie la racine de l'arbre B à celle de l'arbre A
     //(racine de B devient un fils de la racine de A)
     B->pere = A;
 
 }
 
-//@brief Créer un nouveau Noeud (racine d'un nouvel arbre) depuis un Pixel
+//@brief Créer un nouveau Noeud (racine d'un nouvel arbre) à partir d'un Pixel
 Noeud* nouvelElement (Pixel * P) {
 
     Noeud *e = malloc(sizeof(Noeud));
@@ -53,6 +64,7 @@ Noeud* nouvelElement (Pixel * P) {
     e -> pixel = P;
 
     return e;
+
 }
 
 void coloriage(Image * I) {
@@ -60,26 +72,26 @@ void coloriage(Image * I) {
     // initialisation de rand
     srand(time(NULL));
 
+    // On crée un tableau de pointeurs sur Noeud, un arbre par pixel
     Noeud *** NN = malloc(I -> largeur * sizeof(Noeud**));
     for (int i = 0; i < I -> largeur; i++) {
         NN[i] = malloc(I -> hauteur * sizeof(Noeud*));
     }
 
-    // On crée un tableau de listes, une liste par pixel blanc
+    // On parcours ce tableau
     for (int i = 0; i < I -> hauteur; i++) {
         for (int j = 0; j < I -> largeur; j++) {
 
-            NN[j][i] = malloc(sizeof(Noeud));
-
+            // Si le pixel est noir
             if (I -> tableauPixels[j][i] -> R == 0 || I -> tableauPixels[j][i] -> G == 0 || I -> tableauPixels[j][i] -> B == 0) {
 
-                // Cela signifiera la position d'un pixel noir
+                // NULL signifiera la position d'un pixel noir
                 NN[j][i] = NULL;
 
             } else {
 
-                // On crée une nouvelle liste par pixel, avec une couleur aléatoire à chaque fois
-                // La couleur est modififiée directment dans la structure image
+                // On crée un nouveau Noeud par pixel, avec une couleur aléatoire à chaque fois
+                // La couleur est modififiée directment dans la structure image afin de gagner de la place mémoire
                 NN[j][i] = MakeSet(nouvelElement(I -> tableauPixels[j][i]));
 
             }
@@ -148,25 +160,42 @@ void coloriage(Image * I) {
     }
 
 
-    // Un boucle supplémentaire permet de corriger certains problèmes de couleurs
+    // Un boucle supplémentaire permet de récupérer la couleur de chaque ensemble
     for (int i = 0; i < I -> hauteur; i++) {
+
         for (int j = 0; j < I -> largeur; j++) {
+
             if (NN[j][i] != NULL) {
+
                 I -> tableauPixels[j][i] = FindSet(NN[j][i]) -> pixel;
+
             }
         }
     }
+
+    //Finalement on libère la place mémoire
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+            free(NN[j][i]);
+        }
+    }
+    for (int i = 0; i < I -> largeur; i++) {
+        free(NN[i]);
+    }
+    free(NN);
+
 }
 
 
-int main(int argc, char** argv){
+int main(int argc, char const *argv[]) {
 
     (void)argc;
-    printf("Prog_test\n");
+    printf("Coloriage par arbre\n");
 
     printf("Lecture du fichier .pbm\n");
     Image *I = Read((char *)argv[1]);
 
+    printf("Coloriage de l'image\n");
     coloriage(I);
 
     printf("Écriture du fichier .ppm\n");

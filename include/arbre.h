@@ -9,18 +9,25 @@
 #ifndef ARBRE_H
 #define ARBRE_H
 
-#include <stdio.h>
-#include <stdlib.h>
 
-#include "image.h" //juste pour récupérer la struct Pixel
-//TODO (peut-être) : séparer le code de la struct dans un fichier .h à part
+#include "image.h"
+
 
 //@brief Représente un des noeuds
 typedef struct noeud {
+
     Pixel *pixel;
     struct noeud *pere;
     int rang;
+
 } Noeud;
+
+
+Noeud* MakeSet(Noeud *e);
+Noeud* FindSet(Noeud *e);
+void Union(Noeud *x, Noeud *y);
+Noeud* nouvelElement (Pixel * P);
+void coloriage(Image * I);
 
 
 #endif // ARBRE_H

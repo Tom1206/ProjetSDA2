@@ -34,10 +34,11 @@ Representant * FindSet(Liste * e) {
 
 //@brief créer un nouvel ensemble S qui contient les éléments des ensembles A et B
 //puis supprime les ensembles A et B
-//@pre Les ens. A et B doivent être disjoints
 void Union(Liste * A, Liste * B) {
 
+    // On teste si les deux ensembles sont disjoints
     if (FindSet(A) -> head != FindSet(B) -> head) {
+
         // Si A plus grand, on met B à la suite de A
         if (FindSet(A) -> taille > FindSet(B) -> taille) {
 
@@ -55,6 +56,7 @@ void Union(Liste * A, Liste * B) {
 
             }
 
+            // B devient A
             FindSet(B) -> head = FindSet(A) -> head;
             FindSet(B) -> tail = FindSet(A) -> tail;
             FindSet(B) -> taille = FindSet(A) -> taille;
@@ -77,6 +79,7 @@ void Union(Liste * A, Liste * B) {
 
             }
 
+            // A devient B
             FindSet(A) -> head = FindSet(B) -> head;
             FindSet(A) -> tail = FindSet(B) -> tail;
             FindSet(A) -> taille = FindSet(B) -> taille;
@@ -108,26 +111,26 @@ void coloriage(Image * I) {
     // initialisation de rand
     srand(time(NULL));
 
+    // On crée un tableau de pointeurs sur listes, une liste par pixel
     Liste *** LL = malloc(I -> largeur * sizeof(Liste**));
     for (int i = 0; i < I -> largeur; i++) {
         LL[i] = malloc(I -> hauteur * sizeof(Liste*));
     }
 
-    // On crée un tableau de listes, une liste par pixel blanc
+    // On parcours cette liste
     for (int i = 0; i < I -> hauteur; i++) {
         for (int j = 0; j < I -> largeur; j++) {
 
-            LL[j][i] = malloc(sizeof(Liste));
-
+            // On test si un pixel est noir
             if (I -> tableauPixels[j][i] -> R == 0 || I -> tableauPixels[j][i] -> G == 0 || I -> tableauPixels[j][i] -> B == 0) {
 
-                // Cela signifiera la position d'un pixel noir
+                // NULL signifiera la position d'un pixel noir
                 LL[j][i] = NULL;
 
             } else {
 
                 // On crée une nouvelle liste par pixel, avec une couleur aléatoire à chaque fois
-                // La couleur est modififiée directment dans la structure image
+                // La couleur est modififiée directment dans la structure image afin de gagner de la place mémoire
                 LL[j][i] = MakeSet(nouvelElement(I -> tableauPixels[j][i]));
 
             }
@@ -135,7 +138,7 @@ void coloriage(Image * I) {
         }
     }
 
-    // On parcours ce tableau de listes
+    // On parcours à nouveau ce tableau de listes, cette fois-ci pour appliquer l'algo de coloriage
     for (int i = 0; i < I -> hauteur; i++) {
         for (int j = 0; j < I -> largeur; j++) {
 
@@ -197,25 +200,42 @@ void coloriage(Image * I) {
     }
 
 
-    // Un boucle supplémentaire permet de corriger certains problèmes de couleurs
+    // Un boucle supplémentaire permet de récupérer la couleur de chaque ensemble
     for (int i = 0; i < I -> hauteur; i++) {
+
         for (int j = 0; j < I -> largeur; j++) {
+
             if (LL[j][i] != NULL) {
+
                 I -> tableauPixels[j][i] = FindSet(LL[j][i]) -> head -> pixel;
+
             }
         }
     }
+
+    //Finalement on libère la place mémoire
+    for (int i = 0; i < I -> hauteur; i++) {
+        for (int j = 0; j < I -> largeur; j++) {
+            free(LL[j][i]);
+        }
+    }
+    for (int i = 0; i < I -> largeur; i++) {
+        free(LL[i]);
+    }
+    free(LL);
+
 }
 
 
 int main(int argc, char const *argv[]) {
 
     (void)argc;
-    printf("Prog_test\n");
+    printf("Coloriage par liste\n");
 
     printf("Lecture du fichier .pbm\n");
     Image *I = Read((char *)argv[1]);
 
+    printf("Coloriage de l'image\n");
     coloriage(I);
 
     printf("Écriture du fichier .ppm\n");
