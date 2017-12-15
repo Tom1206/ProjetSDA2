@@ -1,6 +1,7 @@
 //programme qui test le traitement des images
 
 #include "prog_test.h"
+#include "arbre.c"
 
 
 //@brief Génère des images aléatoires et les colorie afin de tester les temps d'éxecution
@@ -9,14 +10,14 @@ void benchmark(){
     int n = 10; //les images générées seront de taille n * n
     //on fait les tests pour n allant de 2 à n * 2^13
     for(int i = 1; i <= 13; i++){ 
-        int taille = n * i;
+        int taille = n * 2 * i;
         //on mesurera la moyenne du temps d'execution de 10 coloriages d'une image aléatoire de taille [taille * taille]
         for(int j = 0; j < 10; j++){
             char nom_image[512];
             sprintf(nom_image, "image_bench_%d_%d.pbm",taille, taille);
             printf(" - Génération d'une image aléatoire %s\n", nom_image);
             Generate(taille, taille, nom_image);
-            //test de la struct arbre
+            //test du temps d'executuon avec la struct arbre
             Image *I = Read(nom_image);
             //TODO : début stopwatch
             coloriage(I);
@@ -34,6 +35,9 @@ void benchmark(){
     }
 }
 
+void testFonctionGeneration(){
+    Generate(10, 10, "generate.pbm");
+}
 
 int main(int argc, char** argv){
 
@@ -52,6 +56,8 @@ int main(int argc, char** argv){
     // supprimerImage(I);
 
     benchmark();
+
+    //testFonctionGeneration();
 
     return 0;
 }

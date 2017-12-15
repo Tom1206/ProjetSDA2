@@ -176,7 +176,7 @@ void Write(Image * image, char * nomImagePPM) {
         for (int j = 0; j < image -> largeur; j++) {
 
             // On test si on doit sauter une ligne
-            if (compteurPixels == 5) {
+            if (compteurPixels == image -> largeur) {
                 contenuImage[compteur] = '\n';
                 compteur++;
                 compteurPixels = 0;
@@ -243,7 +243,7 @@ void Generate(int n, int m, char * nomImagePBM) {
         for (int j = 0; j < n; j++) {
 
             // Tous les 35 pixels écrits, retour à la ligne
-            if (compteurPixels == 35) {
+            if (compteurPixels == n) { //pourquoi tous les 35 pixels ?
                 contenuImage[compteur] = '\n';
                 compteur++;
                 compteurPixels = 0;
