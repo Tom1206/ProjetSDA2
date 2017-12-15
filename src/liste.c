@@ -227,6 +227,7 @@ void coloriage(Image * I) {
 }
 
 
+
 int main(int argc, char const *argv[]) {
 
     if (argc != 2) {
@@ -238,14 +239,33 @@ int main(int argc, char const *argv[]) {
     printf("Lecture du fichier .pbm\n");
     Image *I = Read((char *)argv[1]);
 
+    //début du chrono
+	clock_t chrono;
+    chrono = clock();
+
     printf("Coloriage de l'image\n");
     coloriage(I);
 
-    printf("Écriture du fichier .ppm\n");
-    Write(I, "test.ppm");
+    //fin du chrono
+	chrono = clock() - chrono;
+	double time_taken = ((double)chrono)/CLOCKS_PER_SEC; // en secondes
+	printf("(n=%d, m=%d, temps exec: %f s)\n\n",I->hauteur, I->largeur,time_taken);
+    //enregistrement du temps d'execution dans un fichier txt
+    enregistrerRes("temps_exec_liste.txt",I->largeur,time_taken);
+    //petite manipulation de chaîne pour avoir le nom du fichier .pbm
+    char *nom_fichier_res = (char*)argv[1];
+    int str_len = strlen(nom_fichier_res);
+    nom_fichier_res[str_len -2] = 'p';
+    //enregistrement de la version coloriée
+    int ENREGISTRER_IMAGE_PPM = 0;
+    if(ENREGISTRER_IMAGE_PPM == 1){
+        printf("Écriture du fichier .ppm\n");
+        Write(I, nom_fichier_res);
+    }
 
     printf("Supression de la structure image\n");
     supprimerImage(I);
+
 
     return 0;
 }

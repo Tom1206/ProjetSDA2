@@ -251,7 +251,7 @@ void Generate(int n, int m, char * nomImagePBM) {
 
             // On met le pixel à 1 ou 0
             char pixelAEcrire[5];
-            sprintf(pixelAEcrire, "%d ", rand()%2);
+            sprintf(pixelAEcrire, "%d", rand()%2);
 
             // Et on l'écrit à la suite du contenu du fichier
             int k = 0;
@@ -310,3 +310,11 @@ void supprimerImage(Image * image) {
     free(image);
 
 }
+
+//@brief Enregistre la valeur de n et de temps dans un fichier texte 
+//(qui sera utilisé pour calculer les temps d'executions)
+void enregistrerRes(char *nomFichier, int n, double temps){
+    FILE * pFile = fopen(nomFichier, "a");
+    fprintf(pFile,"%d %f\n",n, temps);
+}
+

@@ -19,6 +19,7 @@
 #include <fcntl.h>
 #include <string.h>
 #include <time.h>
+#include <limits.h>
 
 
 /**
@@ -48,6 +49,6 @@ void Write(Image * image, char * nomImagePPM);
 void couleurAleatoire(Pixel * P);
 void Generate(int n, int m, char * nomImagePBM);
 void supprimerImage(Image * image);
-
+void enregistrerRes(char *nomFichier, int n, double temps);
 
 #endif // IMAGE_H

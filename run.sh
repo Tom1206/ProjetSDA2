@@ -1,9 +1,7 @@
-
-echo "* suppression /bin/liste\n"
-rm ./bin/liste
+mkdir bin
+echo "* Suppression ancienne version programme\n"
+rm ./bin/*
 echo "* make : "
 make mrproper
 make
 
-echo "\n* execution ./bin/prog_test"
-./bin/prog_test 
