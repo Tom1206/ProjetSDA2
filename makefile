@@ -2,7 +2,7 @@ CC= gcc
 CFLAGS= -W -Wall -g
 LDFLAGS=
 INCLUDES= -I "./include"
-EXEC= bin/liste bin/prog_test bin/arbre
+EXEC= bin/liste bin/arbre bin/prog_test
 SRC= $(wildcard src/*.c)
 OBJ= $(patsubst src/%.c,obj/%.o,$(SRC))
 

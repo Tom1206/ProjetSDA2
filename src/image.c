@@ -213,7 +213,7 @@ void Write(Image * image, char * nomImagePPM) {
 }
 
 
-
+//@brief génère une image .pbm aléatoire noir et blanc de taille n * m pixels 
 void Generate(int n, int m, char * nomImagePBM) {
 
 

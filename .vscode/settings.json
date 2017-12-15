@@ -3,6 +3,9 @@
         "image.h": "c",
         "liste.h": "c",
         "prog_test.h": "c",
-        "arbre.h": "c"
+        "arbre.h": "c",
+        "stdlib.h": "c",
+        "mman.h": "c",
+        "stdio.h": "c"
     }
 }
