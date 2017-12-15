@@ -187,13 +187,13 @@ void coloriage(Image * I) {
 
 }
 
-/*
+
 int main(int argc, char const *argv[]) {
 
     if (argc != 2) {
         return 1;
     }
-    
+
     printf("Coloriage par arbre\n");
 
     printf("Lecture du fichier .pbm\n");
@@ -210,4 +210,3 @@ int main(int argc, char const *argv[]) {
 
     return 0;
 }
-*/
