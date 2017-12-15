@@ -2,26 +2,6 @@
 
 #include "prog_test.h"
 
-int main(int argc, char** argv){
-
-    (void)argc;
-    printf("Prog_test\n");
-
-    //Generate(10, 10, (char *)argv[1]);
-
-    // printf("Lecture du fichier .pbm\n");
-    // Image *I = Read((char *)argv[1]);
-    //
-    // printf("Écriture du fichier .ppm\n");
-    // Write(I, "test.ppm");
-    //
-    // printf("Supression de la structure image\n");
-    // supprimerImage(I);
-
-    benchmark();
-
-    return 0;
-}
 
 //@brief Génère des images aléatoires et les colorie afin de tester les temps d'éxecution
 void benchmark(){
@@ -52,4 +32,26 @@ void benchmark(){
             supprimerImage(I);
         }
     }
+}
+
+
+int main(int argc, char** argv){
+
+    (void)argc;(void)argv;
+    printf("Prog_test\n");
+
+    //Generate(10, 10, (char *)argv[1]);
+
+    // printf("Lecture du fichier .pbm\n");
+    // Image *I = Read((char *)argv[1]);
+    //
+    // printf("Écriture du fichier .ppm\n");
+    // Write(I, "test.ppm");
+    //
+    // printf("Supression de la structure image\n");
+    // supprimerImage(I);
+
+    benchmark();
+
+    return 0;
 }
